@@ -23,6 +23,10 @@ namespace MovieSystem.Application.Services
         {
             return _repository.Read(id);
         }
+        public List<User> GetAll()
+        {
+            return _repository.ReadAll();
+        }
         public void Update(User entity)
         {
             _repository.Update(entity);
