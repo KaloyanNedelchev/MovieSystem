@@ -1,30 +1,34 @@
-﻿using MovieSystem.Application.Interfaces;
-using MovieSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Persistence.Repositories
 {
-    public class MovieRepository
+    public class MovieRepository : IMovieRepository
     {
         private readonly MovieSystemContext _context;
-        public void Create(Movie entity)
+
+        public MovieRepository(MovieSystemContext context)
         {
-            _context.Add(entity);
-            _context.SaveChanges();
+            _context = context;
         }
-        public Movie Read(int id)
-        {
-            return _context.Movies.SingleOrDefault(x => x.MovieID == id);
-        }
+
         public List<Movie> ReadAll()
         {
             return _context.Movies.ToList();
         }
-        public void Update(Movie entity)
+
+        public Movie Read(int id)
+        {
+            return _context.Movies.SingleOrDefault(x => x.MovieID == id);
+        }
+
+        public Movie Create(Movie entity)
+        {
+            var movie = _context.Add(entity);
+            _context.SaveChanges();
+            return new Movie(); //  movie.Entity; //return the created movie
+        }
+
+        public Movie Update(Movie entity)
         {
             Movie movieFromRepository = Read(entity.MovieID);
             if (movieFromRepository != null)
@@ -39,6 +43,8 @@ namespace MovieSystem.Persistence.Repositories
             {
                 throw new Exception("Movie does not exist");
             }
+
+            return new Movie(); //return the updated movie
         }
         public void Delete(int id)
         {

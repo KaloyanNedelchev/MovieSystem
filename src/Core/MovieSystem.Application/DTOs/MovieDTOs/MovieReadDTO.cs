@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace MovieSystem.Application.DTOs.MovieDTOs
+﻿namespace MovieSystem.Application.DTOs.MovieDTOs
 {
-    public class MovieReadDTO : MovieTemplateDTO
+    public class MovieGetDTO : MovieTemplateDTO
     {
-
+        public int MovieID { get; set; }
     }
 }

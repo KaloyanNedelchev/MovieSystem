@@ -15,6 +15,8 @@ namespace MovieSystem.Persistence.Configurations
         public static void RegisterRepositories(this IServiceCollection services)
         {
             services.AddScoped<IRepository<User>, UserRepository>();
+
+            services.AddScoped<IMovieRepository, MovieRepository>();
         }
     }
 }

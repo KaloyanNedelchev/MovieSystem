@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using MovieSystem.Application.Extensions;
+using MovieSystem.Application.Helpers.Configurations;
 using MovieSystem.Persistence;
 using MovieSystem.Persistence.Configurations;
 

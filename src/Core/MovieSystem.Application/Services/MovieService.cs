@@ -1,39 +1,49 @@
-﻿using MovieSystem.Application.Interfaces;
+﻿using AutoMapper;
+using MovieSystem.Application.DTOs.MovieDTOs;
+using MovieSystem.Application.Interfaces;
 using MovieSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MovieSystem.Persistence.Repositories;
 
 namespace MovieSystem.Application.Services
 {
-    public class MovieService : IService<Movie>
+    public class MovieService : IMovieService
     {
-        private readonly IRepository<Movie> _repository;
-        public MovieService(IRepository<Movie> repository)
+        private readonly IMapper _mapper;
+        private readonly IMovieRepository _movieRepository;
+
+        public MovieService(IMovieRepository repository, IMapper mapper)
         {
-            _repository = repository;
+            _mapper = mapper;
+            _movieRepository = repository;
         }
-        public void Add(Movie entity)
+
+        public List<MovieGetDTO> GetAll()
         {
-            _repository.Create(entity);
+            return _mapper.Map<List<MovieGetDTO>>(_movieRepository.ReadAll());
         }
-        public Movie Read(int id)
+
+        public MovieGetDTO GetById(int id)
         {
-            return _repository.Read(id);
+            return _mapper.Map<MovieGetDTO>(_movieRepository.Read(id));
         }
-        public List<Movie> GetAll()
+
+        public MovieGetDTO Create(MovieCreateDTO entity)
         {
-            return _repository.ReadAll();
+            var movie = _mapper.Map<Movie>(entity);
+            _movieRepository.Create(movie);
+            return _mapper.Map<MovieGetDTO>(movie);
         }
-        public void Update(Movie entity)
+
+        public MovieGetDTO Update(MovieUpdateDTO entity)
         {
-            _repository.Update(entity);
+            var movie = _mapper.Map<Movie>(entity);
+            _movieRepository.Update(movie);
+            return _mapper.Map<MovieGetDTO>(movie);
         }
+
         public void Delete(int key)
         {
-            _repository.Delete(key);
+            _movieRepository.Delete(key);
         }
     }
 }
