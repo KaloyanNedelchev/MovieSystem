@@ -5,15 +5,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieSystem.Domain.Entities
+namespace MovieSystem.Application.DTOs.RatingDTOs
 {
-    public class Rating
+    public class RatingTemplateDTO
     {
-        [Key]
-        public int RatingID { get; set; }
+        [Required]
         public int UserID { get; set; }
+        [Required]
         public int MovieID { get; set; }
+        [Required]
         public double MovieRating { get; set; }
-
     }
 }

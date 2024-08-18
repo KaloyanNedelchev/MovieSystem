@@ -5,14 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MovieSystem.Domain.Entities
+namespace MovieSystem.Application.DTOs.DirectorDTOs
 {
-    public class Director
+    public class DirectorUpdateDTO : DirectorTemplateDTO
     {
-        [Key]
         public int DirectorID { get; set; }
-        public string Name { get; set; }
-        public DateOnly BirthDate { get; set; }
-        public string Nationality { get; set; }
     }
 }

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Services
 {
-    public class UserService
+    public class UserService : IService<User>
     {
         private readonly IRepository<User> _repository;
         public UserService(IRepository<User> repository)
@@ -17,10 +17,9 @@ namespace MovieSystem.Application.Services
         }
         public void Add(User entity)
         {
-            entity.UserID = GenerateUserId();
             _repository.Create(entity);
         }
-        public User Get(int id)
+        public User Read(int id)
         {
             return _repository.Read(id);
         }

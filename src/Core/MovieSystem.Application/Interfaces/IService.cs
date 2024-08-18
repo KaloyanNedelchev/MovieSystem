@@ -8,7 +8,7 @@ namespace MovieSystem.Application.Interfaces
 {
     public interface IService <T>
     {
-        void Create(T entity);
+        void Add(T entity);
         T Read(int id);
         List<T> GetAll();
         void Update(T entity);

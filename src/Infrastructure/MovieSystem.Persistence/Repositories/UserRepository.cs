@@ -36,6 +36,7 @@ namespace MovieSystem.Persistence.Repositories
                 userFromRepository.LastName = entity.LastName;
                 userFromRepository.Email = entity.Email;
                 userFromRepository.DateOfBirth= entity.DateOfBirth;
+                _context.SaveChanges();
             }
             else
             {

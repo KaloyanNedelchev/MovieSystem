@@ -1,5 +1,7 @@
 using Microsoft.EntityFrameworkCore;
+using MovieSystem.Application.Extensions;
 using MovieSystem.Persistence;
+using MovieSystem.Persistence.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -10,7 +12,14 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddDbContext<MovieSystemContext>(o => o.UseSqlServer());
+
+//builder.Services.AddScoped<IRepository<User>, UserRepository>();
+//builder.Services.AddScoped<IService<User>, UserService>();
+builder.Services.AddDbContext<MovieSystemContext>(
+    o => o.UseSqlServer(builder.Configuration.GetConnectionString("SqlServer")));
+
+Serviceconfiguration.RegisteredServices(builder.Services);
+RepositoryConfiguration.RegisterRepositories(builder.Services);
 
 var app = builder.Build();
 

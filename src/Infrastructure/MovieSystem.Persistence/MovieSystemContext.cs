@@ -10,7 +10,10 @@ namespace MovieSystem.Persistence
 {
     public class MovieSystemContext : DbContext
     {
-        public MovieSystemContext() { }
+        public MovieSystemContext() 
+        {
+
+        }
         public MovieSystemContext(DbContextOptions options) : base(options) { }
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

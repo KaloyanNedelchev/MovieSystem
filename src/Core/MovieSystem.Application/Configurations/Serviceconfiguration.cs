@@ -10,7 +10,6 @@ namespace MovieSystem.Application.Extensions
         public static void RegisteredServices( this IServiceCollection service)
         {
             service.AddScoped<IService<User>, UserService>();
-            // service.AddScoped<IRepository<User>, UserRepository>();
         }
     }
 }
