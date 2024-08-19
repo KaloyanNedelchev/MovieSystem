@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Persistence.Repositories
 {
-    public class MovieRepository
+    public class MovieRepository : IRepository<Movie>
     {
         private readonly MovieSystemContext _context;
         public void Create(Movie entity)
@@ -16,7 +16,7 @@ namespace MovieSystem.Persistence.Repositories
             _context.Add(entity);
             _context.SaveChanges();
         }
-        public Movie Read(int id)
+        public Movie ReadByID(int id)
         {
             return _context.Movies.SingleOrDefault(x => x.MovieID == id);
         }
@@ -26,7 +26,7 @@ namespace MovieSystem.Persistence.Repositories
         }
         public void Update(Movie entity)
         {
-            Movie movieFromRepository = Read(entity.MovieID);
+            Movie movieFromRepository = ReadByID(entity.MovieID);
             if (movieFromRepository != null)
             {
                 movieFromRepository.Title = entity.Title;
@@ -42,7 +42,7 @@ namespace MovieSystem.Persistence.Repositories
         }
         public void Delete(int id)
         {
-            Movie movieFromDb = Read(id);
+            Movie movieFromDb = ReadByID(id);
             if (movieFromDb != null)
             {
                 _context.Movies.Remove(movieFromDb);

@@ -17,7 +17,7 @@ namespace MovieSystem.Persistence.Repositories
             _context.Add(entity);
             _context.SaveChanges();
         }
-        public Rating Read(int id)
+        public Rating ReadByID(int id)
         {
             return _context.Ratings.SingleOrDefault(x => x.RatingID == id);
         }
@@ -27,7 +27,7 @@ namespace MovieSystem.Persistence.Repositories
         }
         public void Update(Rating entity)
         { 
-            Rating ratingFromRepository = Read(entity.RatingID);
+            Rating ratingFromRepository = ReadByID(entity.RatingID);
             if (ratingFromRepository != null)
             {
                 ratingFromRepository.UserID = entity.UserID;
@@ -42,7 +42,7 @@ namespace MovieSystem.Persistence.Repositories
         }
         public void Delete(int id)
         {
-            Rating ratingFromDb = Read(id);
+            Rating ratingFromDb = ReadByID(id);
             if (ratingFromDb != null)
             {
                 _context.Ratings.Remove(ratingFromDb);

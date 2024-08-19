@@ -1,4 +1,4 @@
-@MovieSystem.API_HostAddress = http://localhost:5027
+@MovieSystem.API_HostAddress = https://localhost:7210/swagger/index.html
 
 GET {{MovieSystem.API_HostAddress}}/weatherforecast/
 Accept: application/json

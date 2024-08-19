@@ -19,9 +19,9 @@ namespace MovieSystem.Application.Services
         {
             _repository.Create(entity);
         }
-        public Rating Read(int id)
+        public Rating ReadByID(int id)
         {
-            return _repository.Read(id);
+            return _repository.ReadByID(id);
         }
         public List<Rating> GetAll()
         {

@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Interfaces
 {
-    public interface IService <T>
+    public interface IUserRepository <User> : IRepository<User> where User : class
     {
-        void Add(T entity);
-        T ReadByID(int id);
-        List<T> GetAll();
-        void Update(T entity);
-        void Delete(int id);
+        User ReadByEmail(string email);
     }
 }

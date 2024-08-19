@@ -8,7 +8,7 @@ using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Persistence.Repositories
 {
-    public class DirectorRepository
+    public class DirectorRepository : IRepository<Director>
     {
         private readonly MovieSystemContext _context;
         public void Create(Director entity)
@@ -17,7 +17,7 @@ namespace MovieSystem.Persistence.Repositories
             _context.SaveChanges();
         }
 
-        public Director Read(int id)
+        public Director ReadByID(int id)
         {
             return _context.Directors.SingleOrDefault(x => x.DirectorID == id);
         }
@@ -29,7 +29,7 @@ namespace MovieSystem.Persistence.Repositories
 
         public void Update(Director entity)
         {
-            Director directorFromRepository = Read(entity.DirectorID);
+            Director directorFromRepository = ReadByID(entity.DirectorID);
             if (directorFromRepository != null)
             {
                 directorFromRepository.Name = entity.Name;
@@ -44,7 +44,7 @@ namespace MovieSystem.Persistence.Repositories
 
         public void Delete(int id)
         {
-            Director directorFromDb = Read(id);
+            Director directorFromDb = ReadByID(id);
             if (directorFromDb != null)
             {
                 _context.Directors.Remove(directorFromDb);

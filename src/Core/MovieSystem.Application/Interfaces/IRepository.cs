@@ -9,7 +9,7 @@ namespace MovieSystem.Application.Interfaces
     public interface IRepository <T>
     {
         void Create(T entity);
-        T Read(int id);
+        T ReadByID(int id);
         List<T> ReadAll();
         void Update(T entity);
         void Delete(int id);

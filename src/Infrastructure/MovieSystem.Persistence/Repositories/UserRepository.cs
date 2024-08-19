@@ -8,7 +8,7 @@ using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Persistence.Repositories
 {
-    public class UserRepository : IRepository<User>
+    public class UserRepository : IUserRepository <User>
     {
         private readonly MovieSystemContext _context;
         public void Create(User entity)
@@ -17,11 +17,14 @@ namespace MovieSystem.Persistence.Repositories
             _context.SaveChanges();
         }   
 
-        public User Read(int id)
+        public User ReadByID(int id)
         {
             return _context.Users.SingleOrDefault(x => x.UserID == id);
         }
-
+        public User ReadByEmail(string email)
+        {
+            return _context.Users.SingleOrDefault(x => x.Email == email);
+        }
         public List<User> ReadAll()
         {
             return _context.Users.ToList();
@@ -29,7 +32,7 @@ namespace MovieSystem.Persistence.Repositories
 
         public void Update(User entity)
         {
-            User userFromRepository = Read(entity.UserID);
+            User userFromRepository = ReadByID(entity.UserID);
             if (userFromRepository != null)
             {
                 userFromRepository.FirstName = entity.FirstName;
@@ -46,7 +49,7 @@ namespace MovieSystem.Persistence.Repositories
 
         public void Delete(int id)
         {
-            User userFromDb = Read(id);
+            User userFromDb = ReadByID(id);
             if (userFromDb != null)
             {
                 _context.Users.Remove(userFromDb);

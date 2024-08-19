@@ -1,4 +1,5 @@
-﻿using MovieSystem.Application.Interfaces;
+﻿using AutoMapper;
+using MovieSystem.Application.Interfaces;
 using MovieSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,10 +9,10 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Services
 {
-    public class UserService : IService<User>
+    public class UserService : IUserService <User>
     {
-        private readonly IRepository<User> _repository;
-        public UserService(IRepository<User> repository)
+        private readonly IUserRepository<User> _repository;
+        public UserService(IUserRepository<User> repository)
         {
             _repository = repository;
         }
@@ -19,12 +20,17 @@ namespace MovieSystem.Application.Services
         {
             _repository.Create(entity);
         }
-        public User Read(int id)
+        public User ReadByID(int id)
         {
-            return _repository.Read(id);
+            return _repository.ReadByID(id);
+        }
+        public User ReadByEmail(string email)
+        {
+            return _repository.ReadByEmail(email);
         }
         public List<User> GetAll()
         {
+
             return _repository.ReadAll();
         }
         public void Update(User entity)

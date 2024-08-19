@@ -19,9 +19,9 @@ namespace MovieSystem.Application.Services
         {
             _repository.Create(entity);
         }
-        public Director Read(int id)
+        public Director ReadByID(int id)
         {
-            return _repository.Read(id);
+            return _repository.ReadByID(id);
         }
         public List<Director> GetAll()
         {
