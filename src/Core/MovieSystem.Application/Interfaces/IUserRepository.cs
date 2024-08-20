@@ -1,4 +1,6 @@
-﻿using System;
+﻿using MovieSystem.Application.IRepository;
+using MovieSystem.Domain.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Interfaces
 {
-    public interface IUserRepository <User> : IRepository<User> where User : class
+    public interface IUserRepository : IRepository<User>
     {
-        User ReadByEmail(string email);
+        int ReadIdByEmail(string email);
     }
 }

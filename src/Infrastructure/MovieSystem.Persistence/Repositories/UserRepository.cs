@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using MovieSystem.Application.Interfaces;
 using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Persistence.Repositories
 {
-    public class UserRepository : IUserRepository <User>
+    public class UserRepository : IUserRepository
     {
         private readonly MovieSystemContext _context;
         public void Create(User entity)
@@ -17,22 +18,40 @@ namespace MovieSystem.Persistence.Repositories
             _context.SaveChanges();
         }   
 
-        public User ReadByID(int id)
+        public User ReadByID(int id, bool loadNP)
         {
-            return _context.Users.SingleOrDefault(x => x.UserID == id);
+            IQueryable<User> users = _context.Users;
+
+            if (loadNP)
+            {
+                users = users
+                    .Include(r => r.FirstName);
+                    
+            }
+
+            return users.SingleOrDefault(x => x.UserID == id);
         }
-        public User ReadByEmail(string email)
+        public int ReadIdByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(x => x.Email == email);
+            return _context.Users.SingleOrDefault(x => x.Email == email).;
         }
-        public List<User> ReadAll()
+        public List<User> ReadAll(bool loadNP)
         {
-            return _context.Users.ToList();
+            IQueryable<User> users = _context.Users;
+
+            if (loadNP)
+            {
+                users = users
+                    .Include(x => x.FirstName)
+                    .Include(x => x.LastName);
+            }
+
+            return users.ToList();
         }
 
         public void Update(User entity)
         {
-            User userFromRepository = ReadByID(entity.UserID);
+            User userFromRepository = ReadByID(entity.UserID, false);
             if (userFromRepository != null)
             {
                 userFromRepository.FirstName = entity.FirstName;
@@ -49,7 +68,7 @@ namespace MovieSystem.Persistence.Repositories
 
         public void Delete(int id)
         {
-            User userFromDb = ReadByID(id);
+            User userFromDb = ReadByID(id, false);
             if (userFromDb != null)
             {
                 _context.Users.Remove(userFromDb);

@@ -1,39 +1,54 @@
 ﻿using MovieSystem.Application.Interfaces;
 using MovieSystem.Domain.Entities;
+using MovieSystem.Application.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MovieSystem.Application.DTOs.DirectorDTOs;
+using AutoMapper;
+using MovieSystem.Application.IRepository;
 
 namespace MovieSystem.Application.Services
 {
-    public class DirectorService : IService<Director>
+    public class DirectorService : IDirectorService
     {
         private readonly IRepository<Director> _repository;
-        public DirectorService(IRepository<Director> repository)
+        private readonly IMapper _mapper;
+        public DirectorService(IRepository<Director> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
-        public void Add(Director entity)
+
+        public void Add(DirectorCreateDTO entity)
         {
-            _repository.Create(entity);
+            Director directorFromClient = _mapper.Map<Director>(entity);
+            _repository.Create(directorFromClient);
         }
-        public Director ReadByID(int id)
+
+        public DirectorReadDTO Get(int id)
         {
-            return _repository.ReadByID(id);
+            Director directorFromDb = _repository.ReadByID(id);
+            return _mapper.Map<DirectorReadDTO>(directorFromDb);
         }
-        public List<Director> GetAll()
+
+        public List<DirectorReadDTO> GetAll()
         {
-            return _repository.ReadAll();
+            List<Director> directorsFromDb = _repository.ReadAll();
+            return _mapper.Map<List<DirectorReadDTO>>(directorsFromDb);
         }
-        public void Update(Director entity)
+
+        public void Update(DirectorUpdateDTO entity)
         {
-            _repository.Update(entity);
+            Director directorFromClient = _mapper.Map<Director>(entity);
+            _repository.Update(directorFromClient);
         }
-        public void Delete(int key)
+
+        public void Delete(int id)
         {
-            _repository.Delete(key);
+            _repository.Delete(id);
         }
     }
 }

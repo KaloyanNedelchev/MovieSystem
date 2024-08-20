@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using MovieSystem.Application.Interfaces;
 using MovieSystem.Domain.Entities;
+using MovieSystem.Application.DTOs.UserDTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,37 +10,43 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Services
 {
-    public class UserService : IUserService <User>
+    public class UserService : IUserService 
     {
-        private readonly IUserRepository<User> _repository;
-        public UserService(IUserRepository<User> repository)
+        private readonly IUserRepository _repository;
+        private readonly IMapper _mapper;
+        public UserService(IUserRepository repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
-        public void Add(User entity)
-        {
-            _repository.Create(entity);
-        }
-        public User ReadByID(int id)
-        {
-            return _repository.ReadByID(id);
-        }
-        public User ReadByEmail(string email)
-        {
-            return _repository.ReadByEmail(email);
-        }
-        public List<User> GetAll()
-        {
 
-            return _repository.ReadAll();
-        }
-        public void Update(User entity)
+        public void Add(UserCreateDTO entity)
         {
-            _repository.Update(entity);
+            User userFromClient = _mapper.Map<User>(entity);
+            _repository.Create(userFromClient);
         }
-        public void Delete(int key)
+
+        public UserReadDTO Get(int id)
         {
-            _repository.Delete(key);
+            User userFromDb = _repository.ReadByID(id);
+            return _mapper.Map<UserReadDTO>(userFromDb);
+        }
+
+        public List<UserReadDTO> GetAll()
+        {
+            List<User> usersFromDb = _repository.ReadAll();
+            return _mapper.Map<List<UserReadDTO>>(usersFromDb);
+        }
+
+        public void Update(UserUpdateDTO entity)
+        {
+            User userFromClient = _mapper.Map<User>(entity);
+            _repository.Update(userFromClient);
+        }
+
+        public void Delete(int id)
+        {
+            _repository.Delete(id);
         }
     }
 }

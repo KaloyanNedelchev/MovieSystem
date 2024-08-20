@@ -1,4 +1,7 @@
-﻿using MovieSystem.Application.Interfaces;
+﻿using AutoMapper;
+using MovieSystem.Application.DTOs.MovieDTOs;
+using MovieSystem.Application.Interfaces;
+using MovieSystem.Application.IRepository;
 using MovieSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -8,32 +11,43 @@ using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Services
 {
-    public class MovieService : IService<Movie>
+    public class MovieService : IMovieService
     {
         private readonly IRepository<Movie> _repository;
-        public MovieService(IRepository<Movie> repository)
+        private readonly IMapper _mapper;
+        public MovieService(IRepository<Movie> repository, IMapper mapper)
         {
             _repository = repository;
+            _mapper = mapper;
         }
-        public void Add(Movie entity)
+
+        public void Add(MovieCreateDTO entity)
         {
-            _repository.Create(entity);
+            Movie movieFromClient = _mapper.Map<Movie>(entity);
+            _repository.Create(movieFromClient);
         }
-        public Movie ReadByID(int id)
+
+        public MovieReadDTO Get(int id)
         {
-            return _repository.ReadByID(id);
+            Movie movieFromDb = _repository.ReadByID(id);
+            return _mapper.Map<MovieReadDTO>(movieFromDb);
         }
-        public List<Movie> GetAll()
+
+        public List<MovieReadDTO> GetAll()
         {
-            return _repository.ReadAll();
+            List<Movie> moviesFromDb = _repository.ReadAll();
+            return _mapper.Map<List<MovieReadDTO>>(moviesFromDb);
         }
-        public void Update(Movie entity)
+
+        public void Update(MovieUpdateDTO entity)
         {
-            _repository.Update(entity);
+            Movie movieFromClient = _mapper.Map<Movie>(entity);
+            _repository.Update(movieFromClient);
         }
-        public void Delete(int key)
+
+        public void Delete(int id)
         {
-            _repository.Delete(key);
+            _repository.Delete(id);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using MovieSystem.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using MovieSystem.Application.IRepository;
 using MovieSystem.Domain.Entities;
 using MovieSystem.Persistence;
 using System;
@@ -17,17 +19,35 @@ namespace MovieSystem.Persistence.Repositories
             _context.Add(entity);
             _context.SaveChanges();
         }
-        public Rating ReadByID(int id)
+        public Rating ReadByID(int id, bool loadNP)
         {
-            return _context.Ratings.SingleOrDefault(x => x.RatingID == id);
+            IQueryable<Rating> ratings = _context.Ratings;
+
+            if (loadNP)
+            {
+                ratings = ratings
+                    .Include(r => r.MovieRating)
+                    .Include(r => r.MovieID);
+            }
+
+            return ratings.SingleOrDefault(x => x.RatingID == id);
         }
-        public List<Rating> ReadAll() 
-        { 
-            return _context.Ratings.ToList();
+        public List<Rating> ReadAll(bool loadNP) 
+        {
+            IQueryable<Rating> ratings = _context.Ratings;
+
+            if (loadNP)
+            {
+                ratings = ratings
+                    .Include(r => r.MovieRating)
+                    .Include(r => r.MovieID);
+            }
+
+            return ratings.ToList();
         }
         public void Update(Rating entity)
         { 
-            Rating ratingFromRepository = ReadByID(entity.RatingID);
+            Rating ratingFromRepository = ReadByID(entity.RatingID, false);
             if (ratingFromRepository != null)
             {
                 ratingFromRepository.UserID = entity.UserID;
@@ -42,7 +62,7 @@ namespace MovieSystem.Persistence.Repositories
         }
         public void Delete(int id)
         {
-            Rating ratingFromDb = ReadByID(id);
+            Rating ratingFromDb = ReadByID(id, false);
             if (ratingFromDb != null)
             {
                 _context.Ratings.Remove(ratingFromDb);

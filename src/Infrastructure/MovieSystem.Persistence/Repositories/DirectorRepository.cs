@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MovieSystem.Application.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using MovieSystem.Application.IRepository;
 using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Persistence.Repositories
@@ -17,19 +18,35 @@ namespace MovieSystem.Persistence.Repositories
             _context.SaveChanges();
         }
 
-        public Director ReadByID(int id)
+        public Director ReadByID(int id, bool loadNP)
         {
-            return _context.Directors.SingleOrDefault(x => x.DirectorID == id);
+            IQueryable<Director> directors = _context.Directors;
+
+            if (loadNP)
+            {
+                directors = directors
+                    .Include(d => d.Name);
+            }
+
+            return directors.SingleOrDefault(x => x.DirectorID == id);
         }
 
-        public List<Director> ReadAll()
+        public List<Director> ReadAll(bool loadNP)
         {
-            return _context.Directors.ToList();
+            IQueryable<Director> directors = _context.Directors;
+
+            if (loadNP)
+            {
+                directors = directors
+                    .Include(d => d.Name);
+            }
+
+            return directors.ToList();
         }
 
         public void Update(Director entity)
         {
-            Director directorFromRepository = ReadByID(entity.DirectorID);
+            Director directorFromRepository = ReadByID(entity.DirectorID, false);
             if (directorFromRepository != null)
             {
                 directorFromRepository.Name = entity.Name;
@@ -44,7 +61,7 @@ namespace MovieSystem.Persistence.Repositories
 
         public void Delete(int id)
         {
-            Director directorFromDb = ReadByID(id);
+            Director directorFromDb = ReadByID(id, false);
             if (directorFromDb != null)
             {
                 _context.Directors.Remove(directorFromDb);

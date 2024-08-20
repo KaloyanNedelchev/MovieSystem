@@ -1,4 +1,6 @@
-﻿using MovieSystem.Application.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using MovieSystem.Application.IRepository;
 using MovieSystem.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -16,17 +18,35 @@ namespace MovieSystem.Persistence.Repositories
             _context.Add(entity);
             _context.SaveChanges();
         }
-        public Movie ReadByID(int id)
+        public Movie ReadByID(int id, bool loadNP)
         {
-            return _context.Movies.SingleOrDefault(x => x.MovieID == id);
+            IQueryable<Movie> movies = _context.Movies;
+
+            if (loadNP)
+            {
+                movies = movies
+                    .Include(m => m.Title)
+                    .Include(m => m.Genre);
+            }
+
+            return movies.SingleOrDefault(x => x.MovieID == id);
         }
-        public List<Movie> ReadAll()
+        public List<Movie> ReadAll(bool loadNP)
         {
-            return _context.Movies.ToList();
+            IQueryable<Movie> movies = _context.Movies;
+
+            if (loadNP)
+            {
+                movies = movies
+                    .Include(m => m.Title)
+                    .Include(m => m.Genre);
+            }
+
+            return movies.ToList();
         }
         public void Update(Movie entity)
         {
-            Movie movieFromRepository = ReadByID(entity.MovieID);
+            Movie movieFromRepository = ReadByID(entity.MovieID, false);
             if (movieFromRepository != null)
             {
                 movieFromRepository.Title = entity.Title;
@@ -42,7 +62,7 @@ namespace MovieSystem.Persistence.Repositories
         }
         public void Delete(int id)
         {
-            Movie movieFromDb = ReadByID(id);
+            Movie movieFromDb = ReadByID(id, false);
             if (movieFromDb != null)
             {
                 _context.Movies.Remove(movieFromDb);
