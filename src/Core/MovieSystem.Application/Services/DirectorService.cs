@@ -30,13 +30,13 @@ namespace MovieSystem.Application.Services
 
         public DirectorReadDTO Get(int id)
         {
-            Director directorFromDb = _repository.ReadByID(id);
+            Director directorFromDb = _repository.ReadByID(id, false);
             return _mapper.Map<DirectorReadDTO>(directorFromDb);
         }
 
         public List<DirectorReadDTO> GetAll()
         {
-            List<Director> directorsFromDb = _repository.ReadAll();
+            List<Director> directorsFromDb = _repository.ReadAll(false);
             return _mapper.Map<List<DirectorReadDTO>>(directorsFromDb);
         }
 

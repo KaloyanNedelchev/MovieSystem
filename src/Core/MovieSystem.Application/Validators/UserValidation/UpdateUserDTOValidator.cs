@@ -12,7 +12,7 @@ namespace EventManagementSystem.Application.Validators.UserValidator
     {
         public UpdateUserDTOValidator() 
         { 
-            RuleFor(user=>user.UserId)
+            RuleFor(user=>user.UserID)
                 .NotNull().WithMessage("ID Can`t be null")
                 .GreaterThanOrEqualTo(0).WithMessage("Id must be a positive number");
         }

@@ -8,6 +8,6 @@ namespace MovieSystem.Application.DTOs.UserDTOs
 {
     public class UserUpdateDTO : UserTemplateDTO
     {
-        public int UserId { get; set; }
+        public int UserID { get; set; }
     }
 }

@@ -29,13 +29,13 @@ namespace MovieSystem.Application.Services
 
         public RatingReadDTO Get(int id)
         {
-            Rating ratingFromDb = _repository.ReadByID(id);
+            Rating ratingFromDb = _repository.ReadByID(id, false);
             return _mapper.Map<RatingReadDTO>(ratingFromDb);
         }
 
         public List<RatingReadDTO> GetAll()
         {
-            List<Rating> ratingsFromDb = _repository.ReadAll();
+            List<Rating> ratingsFromDb = _repository.ReadAll(false);
             return _mapper.Map<List<RatingReadDTO>>(ratingsFromDb);
         }
 

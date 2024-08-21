@@ -33,7 +33,8 @@ namespace MovieSystem.Persistence.Repositories
         }
         public int ReadIdByEmail(string email)
         {
-            return _context.Users.SingleOrDefault(x => x.Email == email).;
+            User userFromDb =  _context.Users.SingleOrDefault(x => x.Email == email);
+            return userFromDb.UserID;
         }
         public List<User> ReadAll(bool loadNP)
         {

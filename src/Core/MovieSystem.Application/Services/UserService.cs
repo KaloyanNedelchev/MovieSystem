@@ -28,13 +28,13 @@ namespace MovieSystem.Application.Services
 
         public UserReadDTO Get(int id)
         {
-            User userFromDb = _repository.ReadByID(id);
+            User userFromDb = _repository.ReadByID(id, false);
             return _mapper.Map<UserReadDTO>(userFromDb);
         }
 
         public List<UserReadDTO> GetAll()
         {
-            List<User> usersFromDb = _repository.ReadAll();
+            List<User> usersFromDb = _repository.ReadAll(false);
             return _mapper.Map<List<UserReadDTO>>(usersFromDb);
         }
 
