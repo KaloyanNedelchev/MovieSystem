@@ -1,14 +1,9 @@
-﻿using MovieSystem.Application.Interfaces;
-using MovieSystem.Domain.Entities;
-using MovieSystem.Application.DTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AutoMapper;
 using MovieSystem.Application.DTOs.DirectorDTOs;
-using AutoMapper;
+using MovieSystem.Application.Interfaces;
 using MovieSystem.Application.IRepository;
+using MovieSystem.Application.Validators.DirectorValidation;
+using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Application.Services
 {
@@ -16,14 +11,17 @@ namespace MovieSystem.Application.Services
     {
         private readonly IRepository<Director> _repository;
         private readonly IMapper _mapper;
+        private readonly CreateDirectorDTOValidator _validator;
         public DirectorService(IRepository<Director> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = new CreateDirectorDTOValidator();
         }
 
         public void Add(DirectorCreateDTO entity)
         {
+            _validator.Validate(entity);
             Director directorFromClient = _mapper.Map<Director>(entity);
             _repository.Create(directorFromClient);
         }

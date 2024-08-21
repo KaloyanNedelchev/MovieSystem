@@ -13,6 +13,11 @@ namespace MovieSystem.Persistence.Repositories
     public class MovieRepository : IRepository<Movie>
     {
         private readonly MovieSystemContext _context;
+        public MovieRepository(MovieSystemContext context)
+        {
+            _context = context;
+        }
+
         public void Create(Movie entity)
         {
             _context.Add(entity);
@@ -29,7 +34,7 @@ namespace MovieSystem.Persistence.Repositories
                     .Include(m => m.Genre);
             }
 
-            return movies.SingleOrDefault(x => x.MovieID == id);
+            return movies.FirstOrDefault(x => x.MovieID == id);
         }
         public List<Movie> ReadAll(bool loadNP)
         {

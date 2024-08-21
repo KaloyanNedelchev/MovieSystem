@@ -2,12 +2,8 @@
 using MovieSystem.Application.DTOs.RatingDTOs;
 using MovieSystem.Application.Interfaces;
 using MovieSystem.Application.IRepository;
+using MovieSystem.Application.Validators.RatingValidation;
 using MovieSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Services
 {
@@ -15,14 +11,17 @@ namespace MovieSystem.Application.Services
     {
         private readonly IRepository<Rating> _repository;
         private readonly IMapper _mapper;
+        private readonly CreateRatingDTOValidator _validator;
         public RatingService(IRepository<Rating> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = new CreateRatingDTOValidator();
         }
 
         public void Add(RatingCreateDTO entity)
         {
+            _validator.Validate(entity);
             Rating ratingFromClient = _mapper.Map<Rating>(entity);
             _repository.Create(ratingFromClient);
         }

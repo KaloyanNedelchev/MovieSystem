@@ -12,6 +12,11 @@ namespace MovieSystem.Persistence.Repositories
     public class UserRepository : IUserRepository
     {
         private readonly MovieSystemContext _context;
+        public UserRepository(MovieSystemContext context)
+        {
+            _context = context;
+        }
+
         public void Create(User entity)
         {
             _context.Users.Add(entity);
@@ -29,7 +34,7 @@ namespace MovieSystem.Persistence.Repositories
                     
             }
 
-            return users.SingleOrDefault(x => x.UserID == id);
+            return users.FirstOrDefault(x => x.UserID == id);
         }
         public int ReadIdByEmail(string email)
         {

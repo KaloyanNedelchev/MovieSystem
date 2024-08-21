@@ -14,6 +14,11 @@ namespace MovieSystem.Persistence.Repositories
     public class RatingRepository : IRepository<Rating>
     {
         private readonly MovieSystemContext _context;
+        public RatingRepository(MovieSystemContext context)
+        {
+            _context = context;
+        }
+
         public void Create(Rating entity)
         {
             _context.Add(entity);
@@ -30,7 +35,7 @@ namespace MovieSystem.Persistence.Repositories
                     .Include(r => r.MovieID);
             }
 
-            return ratings.SingleOrDefault(x => x.RatingID == id);
+            return ratings.FirstOrDefault(x => x.RatingID == id);
         }
         public List<Rating> ReadAll(bool loadNP) 
         {

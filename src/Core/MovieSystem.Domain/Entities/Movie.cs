@@ -15,6 +15,7 @@ namespace MovieSystem.Domain.Entities
         public string Title { get; set; }
         public string Genre { get; set; }
         public DateTime ReleaseDate { get; set; }
+        [ForeignKey(nameof(Director))]
         public int DirectorID { get; set; }
     }
 }

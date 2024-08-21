@@ -23,7 +23,7 @@ namespace EventManagementSystem.Application.Validators.UserValidator
             RuleFor(user => user.Email)
                  .NotEmpty().WithMessage("Email is required")
                  .EmailAddress().WithMessage("Invalid email")
-                 .Length(5,50).WithMessage("Email must be between 5 and 50 characters");
+                 .Length(10,40).WithMessage("Email must be between 10 and 40 characters");
 
             RuleFor(user => user.DateOfBirth)
                 .NotNull().WithMessage("Date of birth can`t be null")

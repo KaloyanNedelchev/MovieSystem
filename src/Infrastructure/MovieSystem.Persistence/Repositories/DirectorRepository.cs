@@ -12,6 +12,11 @@ namespace MovieSystem.Persistence.Repositories
     public class DirectorRepository : IRepository<Director>
     {
         private readonly MovieSystemContext _context;
+        public DirectorRepository(MovieSystemContext context)
+        {
+            _context = context;
+        }
+
         public void Create(Director entity)
         {
             _context.Directors.Add(entity);
@@ -28,7 +33,7 @@ namespace MovieSystem.Persistence.Repositories
                     .Include(d => d.Name);
             }
 
-            return directors.SingleOrDefault(x => x.DirectorID == id);
+            return directors.FirstOrDefault(x => x.DirectorID == id);
         }
 
         public List<Director> ReadAll(bool loadNP)

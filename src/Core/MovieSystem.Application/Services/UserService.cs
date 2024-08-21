@@ -1,27 +1,26 @@
 ﻿using AutoMapper;
-using MovieSystem.Application.Interfaces;
-using MovieSystem.Domain.Entities;
 using MovieSystem.Application.DTOs.UserDTOs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using MovieSystem.Application.Interfaces;
+using MovieSystem.Application.Validators.UserValidation;
+using MovieSystem.Domain.Entities;
 
 namespace MovieSystem.Application.Services
 {
-    public class UserService : IUserService 
+    public class UserService : IUserService
     {
         private readonly IUserRepository _repository;
         private readonly IMapper _mapper;
+        private readonly CreateUserDTOValidator _validator;
         public UserService(IUserRepository repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = new CreateUserDTOValidator();
         }
 
         public void Add(UserCreateDTO entity)
         {
+            _validator.Validate(entity);
             User userFromClient = _mapper.Map<User>(entity);
             _repository.Create(userFromClient);
         }

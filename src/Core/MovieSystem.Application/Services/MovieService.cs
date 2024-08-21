@@ -2,12 +2,8 @@
 using MovieSystem.Application.DTOs.MovieDTOs;
 using MovieSystem.Application.Interfaces;
 using MovieSystem.Application.IRepository;
+using MovieSystem.Application.Validators.MovieValidation;
 using MovieSystem.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace MovieSystem.Application.Services
 {
@@ -15,14 +11,17 @@ namespace MovieSystem.Application.Services
     {
         private readonly IRepository<Movie> _repository;
         private readonly IMapper _mapper;
+        private readonly CreateMovieDTOValidator _validator;
         public MovieService(IRepository<Movie> repository, IMapper mapper)
         {
             _repository = repository;
             _mapper = mapper;
+            _validator = new CreateMovieDTOValidator();
         }
 
         public void Add(MovieCreateDTO entity)
         {
+            _validator.Validate(entity);
             Movie movieFromClient = _mapper.Map<Movie>(entity);
             _repository.Create(movieFromClient);
         }
