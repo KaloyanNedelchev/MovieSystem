@@ -22,7 +22,7 @@ namespace MovieSystem.Application.Profiles
             CreateMap<Director ,DirectorReadDTO>()
                 .ForMember(d => d.Name, opt => opt.MapFrom(src => src.Name))
                 .ForMember(d => d.BirthDate, opt => opt.MapFrom(src => src.BirthDate))
-                .ForMember(d => d.Nationality, opt => opt.MapFrom(src => src.Nationality));
+                .ForMember(d => d.Nationality, opt => opt.MapFrom(src => src.Nationality)).ReverseMap();
 
             CreateMap<DirectorUpdateDTO, Director>()
                 .ForMember(d => d.DirectorID, opt => opt.MapFrom(src => src.DirectorID))
@@ -38,7 +38,7 @@ namespace MovieSystem.Application.Profiles
                 .ForMember(m => m.Title, opt => opt.MapFrom(src => src.Title))
                 .ForMember(m => m.Genre, opt => opt.MapFrom(src => src.Genre))
                 .ForMember(m => m.ReleaseDate, opt => opt.MapFrom(src => src.ReleaseDate))
-                .ForMember(m => m.DirectorID, opt => opt.MapFrom(src => src.DirectorID));
+                .ForMember(m => m.DirectorID, opt => opt.MapFrom(src => src.DirectorID)).ReverseMap();
 
             CreateMap<MovieUpdateDTO, Movie>()
                 .ForMember(m => m.MovieID, opt => opt.MapFrom(src => src.MovieID))
@@ -70,7 +70,7 @@ namespace MovieSystem.Application.Profiles
                 .ForMember(u => u.FirstName, opt => opt.MapFrom(src => src.FirstName))
                 .ForMember(u => u.LastName, opt => opt.MapFrom(src => src.LastName))
                 .ForMember(u => u.Email, opt => opt.MapFrom(src => src.Email))
-                .ForMember(u => u.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth));
+                .ForMember(u => u.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth)).ReverseMap();
 
             CreateMap<UserUpdateDTO, User>()
                 .ForMember(u => u.UserID, opt => opt.MapFrom(src => src.UserID))
